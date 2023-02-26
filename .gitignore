@@ -348,3 +348,5 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+/GridWorld2DGame/ClientApp/package-lock.json
+/GridWorld2DGame/package-lock.json
