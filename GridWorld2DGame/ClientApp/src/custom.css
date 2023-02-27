@@ -1,14 +1,97 @@
 /* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+    color: #0366d6;
 }
 
 code {
-  color: #E01A76;
+    color: #E01A76;
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
+
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    font-size: 2em;
+}
+
+    .cell.blank {
+        background-color: white;
+    }
+
+    .cell.speeder {
+        background-color: gray;
+    }
+
+    .cell.lava {
+        background-color: red;
+    }
+
+    .cell.mud {
+        background-color: brown;
+    }
+
+.game-board {
+    display: grid;
+    margin: 0 auto;
+    width: 90%;
+    height: 90%;
+}
+
+.game-info {
+    margin-top: 20px;
+    font-size: 1.5em;
+}
+
+.game-info-moves-low {
+    animation: shake 0.5s linear infinite;
+    color: red;
+}
+
+.game-info-health-low {
+    animation: pulse 0.5s linear infinite;
+    color: red;
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
+
+    75% {
+        transform: translateX(-5px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
