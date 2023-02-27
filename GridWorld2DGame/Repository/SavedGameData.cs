@@ -24,7 +24,7 @@ namespace GridWorld2DGame.Repository
                 Column = playerState.Column
             };
 
-            _savedGames[playerState.PlayerId] = currentState;
+            _savedGames.Add(currentState.PlayerId, currentState);
         }
     }
 }

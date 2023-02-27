@@ -1,8 +1,14 @@
+using GridWorld2DGame.Repository;
+using GridWorld2DGame.Repository.Interface;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IBoardGameData, BoardGameData>();
+builder.Services.AddScoped<ISavedGameData, SavedGameData>();
 
 var app = builder.Build();
 

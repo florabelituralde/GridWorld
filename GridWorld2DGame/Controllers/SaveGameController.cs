@@ -16,6 +16,7 @@ namespace GridWorld2DGame.Controllers
         }
 
         [HttpPost("saved-games")]
+        [Route("[controller]/saved-games")]
         public IActionResult SaveGame([FromBody] PlayerState gameData)
         {
             _savedGameData.SaveGame(gameData);
@@ -23,6 +24,7 @@ namespace GridWorld2DGame.Controllers
         }
 
         [HttpGet("saved-games/{id}")]
+        [Route("[controller]/saved-games/{id}")]
         public ActionResult<PlayerState> GetSavedGame(int id)
         {
             var savedGame = _savedGameData.GetSavedGame(id);

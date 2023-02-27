@@ -35,9 +35,6 @@ export class BoardGame extends Component {
                 }
             });
         });
-        axios.get('/savegame/saved-games').then((response) => {
-            this.setState({ savedGames: response.data });
-        });
         axios.get('/boardgame/boardconfig').then((response) => {
             const boardConfig = response.data;
             const boardSize = 10;
@@ -102,7 +99,6 @@ export class BoardGame extends Component {
 
 
     renderGameInfo(playerState) {
-
         // Generate the game info UI based on this.state.playerState
         const movesClassName = `game-info-moves ${playerState.Moves < 50 ? 'game-info-moves-low' : ''}`;
         const healthClassName = `game-info-health ${playerState.Health < 50 ? 'game-info-health-low' : ''}`;
@@ -122,10 +118,10 @@ export class BoardGame extends Component {
             <div>
                 {this.renderGameBoard(boardConfig)}
                 {this.renderGameInfo(playerState)}
-                <button onClick={this.handleSaveGame} disabled={isSaving}>
+                <button className="button gameButton" onClick={this.handleSaveGame} disabled={isSaving}>
                     {isSaving ? 'Saving...' : 'Save Game'}
                 </button>
-                <button onClick={this.handleLoadGame} disabled={isLoading}>
+                <button className="button gameButton"  onClick={this.handleLoadGame} disabled={isLoading}>
                     {isLoading ? 'Loading...' : 'Resume Game'}
                 </button>
                 {saveError && <p>Error saving game: {saveError}</p>}

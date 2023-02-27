@@ -22,6 +22,7 @@ namespace GridWorld2DGame.Controllers
         }
 
         [HttpGet("start-game")]
+        [Route("[controller]/start-game")]
         public IActionResult GetStartGame()
         {
             Random random = new Random();
@@ -38,6 +39,7 @@ namespace GridWorld2DGame.Controllers
         }
 
         [HttpPost("start-game")]
+        [Route("[controller]/start-game")]
         public IActionResult SetStartGame([FromBody] PlayerState currentState)
         {
             Health = currentState.Health;
@@ -48,6 +50,7 @@ namespace GridWorld2DGame.Controllers
         }
 
         [HttpGet("boardconfig")]
+        [Route("[controller]/boardconfig")]
         public ActionResult<Dictionary<string, Tile>> GetBoardGameConfig()
         {
             var boardConfig = _boardGameData.GetBoardGameConfig();
