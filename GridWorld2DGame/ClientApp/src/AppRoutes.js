@@ -1,4 +1,5 @@
 import { Home } from "./components/Home";
+import { BoardGame } from "./components/BoardGame";
 
 const AppRoutes = [
   {
