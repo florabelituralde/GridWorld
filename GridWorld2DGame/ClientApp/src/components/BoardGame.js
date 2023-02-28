@@ -7,11 +7,11 @@ export class BoardGame extends Component {
 
         this.state = {
             playerState: {
-                PlayerId: 1,
-                Health: 200,
-                Moves: 450,
-                Row: 0,
-                Column: 0
+                playerId: 1,
+                health: 200,
+                moves: 450,
+                row: 0,
+                column: 0
             },
             isSaving: false,
             saveError: null,
@@ -27,24 +27,36 @@ export class BoardGame extends Component {
         axios.get('/boardgame/start-game').then((response) => {
             this.setState({
                 playerState: {
-                    PlayerId: response.data.PlayerId,
-                    Health: response.data.Health,
-                    Moves: response.data.Moves,
-                    Row: response.data.Row,
-                    Column: response.data.Column
+                    playerId: response.data.PlayerId,
+                    health: response.data.Health,
+                    moves: response.data.Moves,
+                    row: response.data.Row,
+                    column: response.data.Column
                 }
             });
         });
         axios.get('/boardgame/boardconfig').then((response) => {
             const boardConfig = response.data;
             const boardSize = 10;
-            const board = Array.from({ length: boardSize }, () =>
-                Array.from({ length: boardSize }, () =>
-                    boardConfig.Blank));
+            const board = [];
+
+            // Create a random distribution of cell types
+            const cellTypes = Object.keys(boardConfig);
+            for (let i = 0; i < boardSize; i++) {
+                const row = [];
+                for (let j = 0; j < boardSize; j++) {
+                    const randomIndex = Math.floor(Math.random() * cellTypes.length);
+                    const randomCellType = cellTypes[randomIndex];
+                    row.push(boardConfig[randomCellType]);
+                }
+                board.push(row);
+            }
+
             // set the state with the fetched board configuration and the created board
             this.setState({ boardConfig, board });
         });
     }
+
 
     // This method is called when the player clicks the "Save Game" button
     handleSaveGame = () => {
@@ -74,39 +86,40 @@ export class BoardGame extends Component {
             });
     };
 
-    renderGameBoard(boardConfig) {
-        // Generate the game board UI based on this.state.playerState
-        const { board } = this.state;
+    renderGameBoard() {
+        const { board, boardConfig } = this.state;
         const boardSize = board.length;
 
-        // Generate a grid of cells representing the game board
-        const grid = [];
+        // Generate a 2D grid of cells representing the game board
+        const rows = [];
         for (let i = 0; i < boardSize; i++) {
+            const row = [];
             for (let j = 0; j < boardSize; j++) {
-                const cellType = board[i][j];
-                const cellClass = `cell ${cellType.toLowerCase()} ${boardConfig[cellType].cssClass}`;
-                grid.push(<div className={cellClass} key={`${i}-${j}`}></div>);
+                const cellTypeKeys = Object.keys(boardConfig);
+                const randomIndex = Math.floor(Math.random() * cellTypeKeys.length);
+                const randomCellType = cellTypeKeys[randomIndex];
+                const cellType = boardConfig[randomCellType];
+                const cellClass = `cell cell-${randomCellType.toLowerCase()}`;
+                row.push(<div className={cellClass} key={`${i}-${j}`}></div>);
             }
+            rows.push(<div className="row" key={i}>{row}</div>);
         }
 
-        const containerStyle = {
-            gridTemplateColumns: `repeat(${boardSize}, 1fr)`,
-            gridTemplateRows: `repeat(${boardSize}, 1fr)`,
-        };
-
-        return <div className="game-board" style={containerStyle}>{grid}</div>;
-    };
+        return <div className="game-board">{rows}</div>;
+    }
 
 
-    renderGameInfo(playerState) {
-        // Generate the game info UI based on this.state.playerState
-        const movesClassName = `game-info-moves ${playerState.Moves < 50 ? 'game-info-moves-low' : ''}`;
-        const healthClassName = `game-info-health ${playerState.Health < 50 ? 'game-info-health-low' : ''}`;
+    renderGameInfo() {
+        const { playerState } = this.state;
+        const isLow = (value) => value < 50;
+
+        const movesClassName = `game-info-moves ${isLow(playerState.moves) ? 'game-info-moves-low' : ''}`;
+        const healthClassName = `game-info-health ${isLow(playerState.health) ? 'game-info-health-low' : ''}`;
 
         return (
             <div className="game-info">
-                <p className={movesClassName}>Moves remaining: {playerState.Moves}</p>
-                <p className={healthClassName}>Health remaining: {playerState.Health}</p>
+                <p className={movesClassName}>Moves remaining: {playerState.moves}</p>
+                <p className={healthClassName}>Health remaining: {playerState.health}</p>
             </div>
         );
     }
@@ -116,12 +129,12 @@ export class BoardGame extends Component {
 
         return (
             <div>
-                {this.renderGameBoard(boardConfig)}
-                {this.renderGameInfo(playerState)}
+                {this.renderGameBoard()}
+                {this.renderGameInfo()}
                 <button className="button gameButton" onClick={this.handleSaveGame} disabled={isSaving}>
                     {isSaving ? 'Saving...' : 'Save Game'}
                 </button>
-                <button className="button gameButton"  onClick={this.handleLoadGame} disabled={isLoading}>
+                <button className="button gameButton" onClick={this.handleLoadGame} disabled={isLoading}>
                     {isLoading ? 'Loading...' : 'Resume Game'}
                 </button>
                 {saveError && <p>Error saving game: {saveError}</p>}
@@ -129,4 +142,5 @@ export class BoardGame extends Component {
             </div>
         );
     }
+
 }

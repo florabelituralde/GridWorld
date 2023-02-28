@@ -1,6 +1,7 @@
 ﻿using GridWorld2DGame.Models;
 using GridWorld2DGame.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace GridWorld2DGame.Controllers
 {
@@ -16,25 +17,32 @@ namespace GridWorld2DGame.Controllers
         }
 
         [HttpPost("saved-games")]
-        [Route("[controller]/saved-games")]
-        public IActionResult SaveGame([FromBody] PlayerState gameData)
+        public IActionResult SaveGame([FromBody] PlayerState playerState)
         {
-            _savedGameData.SaveGame(gameData);
-            return Ok();
+            try
+            {
+                _savedGameData.SaveGame(playerState.PlayerId, JsonConvert.SerializeObject(playerState));
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        [HttpGet("saved-games/{id}")]
-        [Route("[controller]/saved-games/{id}")]
-        public ActionResult<PlayerState> GetSavedGame(int id)
+        [HttpGet("saved-games/{playerId}")]
+        public ActionResult<PlayerState> GetSavedGame(int playerId)
         {
-            var savedGame = _savedGameData.GetSavedGame(id);
-
-            if (savedGame == null)
+            try
             {
-                return NotFound();
+                string gameData = _savedGameData.LoadGame(playerId);
+                PlayerState playerState = JsonConvert.DeserializeObject<PlayerState>(gameData);
+                return Ok(playerState);
             }
-
-            return savedGame;
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

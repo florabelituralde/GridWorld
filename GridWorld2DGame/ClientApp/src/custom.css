@@ -13,40 +13,59 @@ code {
     border-color: #1861ac;
 }
 
-.cell {
+.game-board {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 80%;
+    height: 80%;
     border: 1px solid black;
-    font-size: 2em;
+    border-radius: 5px;
 }
 
-    .cell.blank {
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.cell {
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    border: 1px solid black;
+}
+
+    .cell-blank {
         background-color: white;
     }
 
-    .cell.speeder {
+    .cell-speeder {
         background-color: gray;
     }
 
-    .cell.lava {
+    .cell-lava {
         background-color: red;
     }
 
-    .cell.mud {
+    .cell-mud {
         background-color: brown;
     }
 
-.game-board {
-    display: grid;
-    margin: 0 auto;
-    width: 90%;
-    height: 90%;
+.game-info p {
+    margin-top: 20px;
+    color: black;
+    font-size: 1.5em;
 }
 
-.game-info {
-    margin-top: 20px;
-    font-size: 1.5em;
+.game-info-moves {
+    color: green;
+}
+
+.game-info-health {
+    color: green;
 }
 
 .game-info-moves-low {

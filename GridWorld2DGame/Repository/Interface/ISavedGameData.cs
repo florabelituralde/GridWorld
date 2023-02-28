@@ -4,7 +4,7 @@ namespace GridWorld2DGame.Repository.Interface
 {
     public interface ISavedGameData
     {
-        PlayerState GetSavedGame(int id);
-        void SaveGame(PlayerState playerState);
+        string LoadGame(int playerId);
+        void SaveGame(int playerId, string playerState);
     }
 }

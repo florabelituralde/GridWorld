@@ -1,7 +1,6 @@
 ﻿using GridWorld2DGame.Models;
 using GridWorld2DGame.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 namespace GridWorld2DGame.Controllers
 {

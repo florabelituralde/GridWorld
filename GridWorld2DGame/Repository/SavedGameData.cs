@@ -5,26 +5,23 @@ namespace GridWorld2DGame.Repository
 {
     public class SavedGameData : ISavedGameData
     {
-        private readonly Dictionary<int, PlayerState> _savedGames = new Dictionary<int, PlayerState>();
+        private readonly Dictionary<int, string> _savedGames = new Dictionary<int, string>();
 
-        public PlayerState GetSavedGame(int id)
+        public void SaveGame(int playerId, string gameData)
         {
-            _savedGames.TryGetValue(id, out PlayerState playerState);
-            return playerState;
+            _savedGames[playerId] = gameData;
         }
 
-        public void SaveGame(PlayerState playerState)
+        public string LoadGame(int playerId)
         {
-            var currentState = new PlayerState
+            if (_savedGames.TryGetValue(playerId, out string gameData))
             {
-                PlayerId = playerState.PlayerId,
-                Health = playerState.Health,
-                Moves = playerState.Moves,
-                Row = playerState.Row,
-                Column = playerState.Column
-            };
-
-            _savedGames.Add(currentState.PlayerId, currentState);
+                return gameData;
+            }
+            else
+            {
+                throw new ArgumentException($"No saved game found for player ID {playerId}");
+            }
         }
     }
 }
