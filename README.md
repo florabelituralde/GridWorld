@@ -27,4 +27,5 @@ Based on above problem and chosen assignment, this repo consist of:
 - Backend API built in .NET6 consists of `BoardGameController.cs` and `SaveGameController.cs`
 - A Data repository called `SavedGameData.cs` which saves the player data to a dictionary and retriever player data from it.
 - Board game data config in `BoardGameData.cs` which gets the info for each grid status.
+- This renders a board game in `BoardGame.js` that shows grid types such as Blank, Speeder, Lava, and Mud randomly on the grid
 - This also renders remaining health and moves data to the front end using React
